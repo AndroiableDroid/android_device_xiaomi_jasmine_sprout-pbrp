@@ -41,13 +41,6 @@ service sbinqseecomd /sbin/qseecomd
     disabled
     seclabel u:r:recovery:s0
 
-service prepdecrypt /sbin/prepdecrypt.sh
-    oneshot
-    disabled
-    user root
-    group root
-    seclabel u:r:recovery:s0
-
 service hwservicemanager /sbin/hwservicemanager
     user root
     group root
@@ -122,7 +115,9 @@ on init
     start logd
     start hwservicemanager
     start boot-1-0
-    start prepdecrypt
+    # Run prepdecrypt synchronously to ensure decryption
+    # is possible before mounting partitions.
+    exec u:r:recovery:s0 root root -- /sbin/prepdecrypt.sh
     start time_daemon
 
 on property:crypto.ready=0
