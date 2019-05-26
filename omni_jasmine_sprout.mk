@@ -71,6 +71,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.allow.mock.location=0 \
     ro.hardware.keystore=sdm660
 
+# HACK: Set vendor patch level
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.vendor.build.security_patch=2099-12-31
 
 ## Device identifier. This must come after all inclusions
 PRODUCT_NAME := omni_jasmine_sprout
