@@ -74,10 +74,11 @@ PRODUCT_MODEL := Mi A2
 PRODUCT_MANUFACTURER := Xiaomi
 
 # add support for future ota updates
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+PRODUCT_PROPERTY_OVERRIDES += \
     ro.secure=1 \
     ro.adb.secure=0 \
-    ro.allow.mock.location=0
+    ro.allow.mock.location=0 \
+    ro.hardware.keystore=sdm660
     
 PRODUCT_BUILD_PROP_OVERRIDES += \
     TARGET_DEVICE="jasmine_sprout" \
