@@ -32,6 +32,7 @@ jobs:
             git config --global color.ui true
             wget https://raw.githubusercontent.com/PitchBlackRecoveryProject/vendor_pb/pb/build.sh && chmod +x build.sh
             source build.sh ${SFUserName} ${SFPassword} ${GITHUB_TOKEN}
+            echo "Yes"
 workflows:
   version: 2
   build_and_test:
