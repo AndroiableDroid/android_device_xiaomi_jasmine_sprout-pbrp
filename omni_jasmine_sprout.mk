@@ -63,7 +63,15 @@ PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-service \
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.vendor.build.security_patch=2025-12-31
+    ro.vendor.build.security_patch=2025-12-31 \
+    fbe.data.wrappedkey=true
+	
+# add support for future ota updates
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.secure=1 \
+    ro.adb.secure=0 \
+    ro.allow.mock.location=0 \
+    ro.hardware.keystore=sdm660
 
 # Device identifier. This must come after all inclusions
 PRODUCT_PLATFORM := SDM660
@@ -72,13 +80,6 @@ PRODUCT_DEVICE := jasmine_sprout
 PRODUCT_BRAND := xiaomi
 PRODUCT_MODEL := Mi A2
 PRODUCT_MANUFACTURER := Xiaomi
-
-# add support for future ota updates
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.secure=1 \
-    ro.adb.secure=0 \
-    ro.allow.mock.location=0 \
-    ro.hardware.keystore=sdm660
     
 PRODUCT_BUILD_PROP_OVERRIDES += \
     TARGET_DEVICE="jasmine_sprout" \
