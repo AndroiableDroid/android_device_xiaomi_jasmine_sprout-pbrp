@@ -1,20 +1,12 @@
 #!/sbin/sh
 
- ## Do not forget to patch ;)
- # relink()
- # {
- #  cp $1 ${1}_old
- #  rm $1
- #  sed 's|/system/bin/linker64|///////sbin/linker64|' "${1}_old" > "$1"
- #  chmod 755 $1
- #  rm ${1}_old
- # }
- #
- # relink android.hardware.boot@1.0-service
- # relink android.hardware.gatekeeper@1.0-service-qti
- # relink android.hardware.keymaster@3.0-service-qti
- # relink qseecomd
- # relink time_daemon
+relink()
+{
+	fname=$(basename "$1")
+	target="/sbin/$fname"
+	sed 's|/system/bin/linker64|///////sbin/linker64|' "$1" > "$target"
+	chmod 755 $target
+}
 
 finish()
 {
@@ -34,11 +26,11 @@ fi
 venpath="/dev/block/bootdevice/by-name/vendor$suffix"
 mkdir /v
 mount -t ext4 -o ro "$venpath" /v
+
 syspath="/dev/block/bootdevice/by-name/system$suffix"
 mkdir /s
 mount -t ext4 -o ro "$syspath" /s
 
-device_codename=$(getprop ro.boot.hardware)
 is_fastboot_twrp=$(getprop ro.boot.fastboot)
 if [ ! -z "$is_fastboot_twrp" ]; then
 	osver=$(getprop ro.build.version.release_orig)
@@ -48,7 +40,7 @@ if [ ! -z "$is_fastboot_twrp" ]; then
 	finish
 fi
 
-if [ -f /s/system/system/build.prop ]; then
+if [ -f /s/system/build.prop ]; then
 	# TODO: It may be better to try to read these from the boot image than from /system
 	osver=$(grep -i 'ro.build.version.release' /s/system/build.prop  | cut -f2 -d'=')
 	patchlevel=$(grep -i 'ro.build.version.security_patch' /s/system/build.prop  | cut -f2 -d'=')
@@ -63,3 +55,48 @@ else
 	setprop ro.build.version.security_patch "$patchlevel"
 	finish
 fi
+
+###### NOTE: The below is no longer used but I'm keeping it here in case it is needed again at some point!
+mkdir -p /vendor/lib64/hw/
+
+cp /s/system/lib64/android.hidl.base@1.0.so /sbin/
+cp /s/system/lib64/libicuuc.so /sbin/
+cp /s/system/lib64/libxml2.so /sbin/
+
+relink /v/bin/qseecomd
+
+cp /v/lib64/libdiag.so /vendor/lib64/
+cp /v/lib64/libdrmfs.so /vendor/lib64/
+cp /v/lib64/libdrmtime.so /vendor/lib64/
+cp /v/lib64/libGPreqcancel.so /vendor/lib64/
+cp /v/lib64/libGPreqcancel_svc.so /vendor/lib64/
+cp /v/lib64/libqdutils.so /vendor/lib64/
+cp /v/lib64/libqisl.so /vendor/lib64/
+cp /v/lib64/libqservice.so /vendor/lib64/
+cp /v/lib64/libQSEEComAPI.so /vendor/lib64/
+cp /v/lib64/librecovery_updater_msm.so /vendor/lib64/
+cp /v/lib64/librpmb.so /vendor/lib64/
+cp /v/lib64/libsecureui.so /vendor/lib64/
+cp /v/lib64/libSecureUILib.so /vendor/lib64/
+cp /v/lib64/libsecureui_svcsock.so /vendor/lib64/
+cp /v/lib64/libspcom.so /vendor/lib64/
+cp /v/lib64/libspl.so /vendor/lib64/
+cp /v/lib64/libssd.so /vendor/lib64/
+cp /v/lib64/libStDrvInt.so /vendor/lib64/
+cp /v/lib64/libtime_genoff.so /vendor/lib64/
+cp /v/lib64/libkeymasterdeviceutils.so /vendor/lib64/
+cp /v/lib64/libkeymasterprovision.so /vendor/lib64/
+cp /v/lib64/libkeymasterutils.so /vendor/lib64/
+cp /v/lib64/hw/android.hardware.boot@1.0-impl.so /vendor/lib64/hw/
+cp /v/lib64/hw/android.hardware.gatekeeper@1.0-impl-qti.so /vendor/lib64/hw/
+cp /v/lib64/hw/android.hardware.keymaster@3.0-impl-qti.so /vendor/lib64/hw/
+
+cp /v/manifest.xml /vendor/
+cp /v/compatibility_matrix.xml /vendor/
+
+relink /v/bin/hw/android.hardware.boot@1.0-service
+relink /v/bin/hw/android.hardware.keymaster@3.0-service-qti
+relink /v/bin/hw/android.hardware.gatekeeper@1.0-service-qti
+
+finish
+exit 0

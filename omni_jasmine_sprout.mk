@@ -14,30 +14,22 @@
 # limitations under the License.
 #
 
-# Release name
-PRODUCT_RELEASE_NAME := jasmine_sprout
+# Inherit from the common Open Source product configuration
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
-$(call inherit-product, build/target/product/embedded.mk)
+# Inherit language packages
+$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/pb/config/common.mk)
 
-# Inherit language packages
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
-
-# Charger
-PRODUCT_PACKAGES += \
-    charger_res_images \
-    charger
+# A/B updater
+AB_OTA_UPDATER := true
 
 AB_OTA_PARTITIONS += \
     boot \
     system \
     vendor
-
-PRODUCT_PACKAGES += \
-    bootctrl.sdm660
 
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
@@ -47,49 +39,42 @@ AB_OTA_POSTINSTALL_CONFIG += \
 
 PRODUCT_PACKAGES += \
     otapreopt_script \
-    cppreopts.sh \
     update_engine \
     update_verifier
+
+# The following modules are included in debuggable builds only.
+PRODUCT_PACKAGES_DEBUG += \
+    bootctl \
+    update_engine_client
+
+# Boot control HAL
+PRODUCT_PACKAGES += \
+    bootctrl.sdm660
 
 PRODUCT_STATIC_BOOT_CONTROL_HAL := \
     bootctrl.sdm660 \
     libgptutils \
-    libz \
-    libcutils
+    libz
 
-# Boot control HAL
 PRODUCT_PACKAGES += \
-    android.hardware.boot@1.0-impl \
-    android.hardware.boot@1.0-service \
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.vendor.build.security_patch=2025-12-31 \
-    fbe.data.wrappedkey=true
+    charger_res_images \
+    charger
 	
+	# Partitions (listed in the file) to be wiped under recovery.
+TARGET_RECOVERY_WIPE := \
+    device/xiaomi/jasmine_sprout/recovery/root/etc/recovery.wipe	
+
 # add support for future ota updates
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.secure=1 \
+    ro.secure=0 \
     ro.adb.secure=0 \
     ro.allow.mock.location=0 \
     ro.hardware.keystore=sdm660
 
-# Device identifier. This must come after all inclusions
-PRODUCT_PLATFORM := SDM660
+
+## Device identifier. This must come after all inclusions
 PRODUCT_NAME := omni_jasmine_sprout
 PRODUCT_DEVICE := jasmine_sprout
-PRODUCT_BRAND := xiaomi
+PRODUCT_BRAND := Xiaomi
 PRODUCT_MODEL := Mi A2
-PRODUCT_MANUFACTURER := Xiaomi
-    
-PRODUCT_BUILD_PROP_OVERRIDES += \
-    TARGET_DEVICE="jasmine_sprout" \
-    PRODUCT_NAME="jasmine" \
-    PRIVATE_BUILD_DESC="jasmine-user 9 PKQ1.180904.001 V10.0.10.0.PDIMIXM release-keys"
-	
-TARGET_VENDOR_PRODUCT_NAME := jasmine
-
-BUILD_FINGERPRINT := "xiaomi/jasmine/jasmine_sprout:9/PKQ1.180904.001/V10.0.10.0.PDIMIXM:user/release-keys"
-
-# Maintainer Prop
-PRODUCT_BUILD_PROP_OVERRIDES += \
-DEVICE_MAINTAINERS="Manish4586"
+PRODUCT_MANUFACTURER := xiaomi
