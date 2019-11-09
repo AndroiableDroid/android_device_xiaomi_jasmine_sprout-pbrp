@@ -1,6 +1,3 @@
 ro.display.series=Mi A2
 ro.product.board=sdm660
 ro.board.platform=sdm660
-ro.build.version.release=9
-ro.build.version.security_patch=2025-01-05
-fbe.data.wrappedkey=true

@@ -32,7 +32,6 @@ on fs
     chown system drmrpc /dev/qseecom
     chmod 0664 /dev/ion
     chown system system /dev/ion
-    setprop ro.hardware.bootctrl sdm660
     export LD_LIBRARY_PATH /sbin:/vendor/lib64:/vendor/lib64/hw
     install_keyring
 
@@ -102,10 +101,6 @@ on boot
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
 
 on init
-    setprop ro.hardware.keystore sdm660
-    setprop ro.hardware.gatekeeper sdm660
-    setprop ro.hardware.bootctrl sdm660
-    setprop ro.build.system_root_image true
     start prepdecrypt
     #setprop crypto.ready 1
 
