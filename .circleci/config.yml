@@ -2,39 +2,36 @@ version: 2
 jobs:
   build:
     docker:
-      # primary image
-      - image: kylemanna/aosp:latest
-      # secondary image
-      - image: circleci/openjdk:8-jdk
-      # github releases
-      - image: cibuilds/github:0.10
-    working_directory: /aosp
+      - image: fr3akyphantom/pitchblack-builder:latest
+    environment:
+      MANIFEST_BRANCH: 'android-9.0'
+      PBRP_BRANCH: 'android-9.0'
+      VERSION: '2.9.0'
+      VENDOR: 'xiaomi'
+      CODENAME: 'jasmine_sprout'
+      BUILD_LUNCH: 'omni_jasmine_sprout-userdebug'
+      TEST_BUILD: 'true'
+    working_directory: /home/builder/pitchblack
     steps:
       - checkout
       - run:
           name: AIO Build
           command: |
-            echo "Initializing"
-            export MANIFEST_BRANCH="android-9.0"
-            export PBRP_BRANCH="android-9.0"
-            export VERSION="2.9.0"
-            export VENDOR="xiaomi"
-            export CODENAME="jasmine"
-            export BUILD_LUNCH="omni_jasmine-eng"
-            export TEST_BUILD="true"
-            DIR=$(pwd) && echo $DIR
-            echo "Make Up2date"
-            sudo apt-get -qqy update && sudo apt-get -qqy upgrade && sudo apt-get update && sudo apt-get --assume-yes install wget libstdc++6 software-properties-common && sudo apt-get update && sudo add-apt-repository ppa:openjdk-r/ppa -y && sudo apt-get update && sudo apt-get purge --auto-remove openjdk* -y && sudo apt-get install openjdk-8-jdk -y && sudo update-alternatives --config java
-            echo "Setup all the prerequisites"
+            sudo apt-get install -y tar
             echo "Set GitAuth Infos too"
             git config --global user.email $GitHubMail
             git config --global user.name $GitHubName
             git config --global color.ui true
-            wget https://raw.githubusercontent.com/PitchBlackRecoveryProject/vendor_pb/pb/build.sh && chmod +x build.sh
+            export TEST_BUILD=true
+            wget -q https://raw.githubusercontent.com/PitchBlackRecoveryProject/vendor_pb/pb/build.sh
+            sed -i "s:GITHUB_TOKEN@github.com\/PitchBlackRecoveryProject:GITHUB_TOKEN@github.com\/AndroiableDroid:g" build.sh
             source build.sh ${SFUserName} ${SFPassword} ${GITHUB_TOKEN}
-            echo "Yes"
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              only: d
+          context: upload
