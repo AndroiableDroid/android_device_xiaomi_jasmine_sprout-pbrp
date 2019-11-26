@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: fr3akyphantom/pitchblack-builder:latest
+      - image: fr3akyphantom/droid-builder:latest
     environment:
       MANIFEST_BRANCH: 'android-9.0'
       PBRP_BRANCH: 'features'
