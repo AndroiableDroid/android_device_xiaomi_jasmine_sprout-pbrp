@@ -4,9 +4,9 @@ jobs:
     docker:
       - image: fr3akyphantom/pitchblack-builder:latest
     environment:
-      MANIFEST_BRANCH: 'android-9.0'
+      MANIFEST_BRANCH: 'test'
       PBRP_BRANCH: 'android-9.0'
-      VERSION: '2.9.0'
+      VERSION: '2.9.0_testtt'
       VENDOR: 'xiaomi'
       CODENAME: 'jasmine_sprout'
       BUILD_LUNCH: 'omni_jasmine_sprout-userdebug'
@@ -33,5 +33,5 @@ workflows:
       - build:
           filters:
             branches:
-              only: d
+              only: "test1"
           context: upload
