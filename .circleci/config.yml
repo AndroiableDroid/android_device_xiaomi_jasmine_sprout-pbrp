@@ -5,7 +5,7 @@ jobs:
       - image: fr3akyphantom/droid-builder:latest
     environment:
       MANIFEST_BRANCH: 'test'
-      PBRP_BRANCH: 'android-9.0'
+      PBRP_BRANCH: 'features'
       VERSION: '2.9.0_testtt'
       VENDOR: 'xiaomi'
       CODENAME: 'jasmine_sprout'
