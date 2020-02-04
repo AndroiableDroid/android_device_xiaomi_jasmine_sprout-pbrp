@@ -38,7 +38,8 @@ AB_OTA_POSTINSTALL_CONFIG += \
 PRODUCT_PACKAGES += \
     otapreopt_script \
     update_engine \
-    update_verifier
+    update_verifier \
+    update_engine_sideload
 
 # Boot control HAL
 PRODUCT_PACKAGES += \
