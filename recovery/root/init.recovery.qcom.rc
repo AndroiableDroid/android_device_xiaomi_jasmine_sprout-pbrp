@@ -93,7 +93,7 @@ on boot
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
 
-on property:crypto.ready=1
+on property:ro.crypto.state=encrypted
     start hwservicemanager
     start keymaster-3-0
     start gatekeeper-1-0
