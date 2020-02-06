@@ -33,5 +33,5 @@ workflows:
       - build:
           filters:
             branches:
-              only: android-9.0
+              only: pb
           context: upload
