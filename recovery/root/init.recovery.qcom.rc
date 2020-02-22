@@ -26,13 +26,12 @@
 #
 
 on fs
-    wait /dev/block/platform/soc/c0c4000.sdhci
-    symlink /dev/block/platform/soc/c0c4000.sdhci /dev/block/bootdevice
+    wait /dev/block/platform/soc/${ro.boot.bootdevice}
+    symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
     chmod 0660 /dev/qseecom
     chown system drmrpc /dev/qseecom
     chmod 0664 /dev/ion
     chown system system /dev/ion
-    export LD_LIBRARY_PATH /sbin:/vendor/lib64:/vendor/lib64/hw
     install_keyring
 
 # separate copy needed to use /sbin/linker64 instead of /system/bin/linker64
@@ -101,19 +100,24 @@ on boot
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
 
 on init
+    start logd
+    start hwservicemanager
+    start boot-1-0
     start prepdecrypt
     #setprop crypto.ready 1
 
-on property:crypto.ready=1
-    start hwservicemanager
-    start keymaster-3-0
-    start gatekeeper-1-0
+on property:ro.crypto.state=encrypted
     start sbinqseecomd
+
+on property:ro.crypto.state=unencrypted
+    stop sbinqseecomd
+
+on property:sys.listeners.registered=true
+    start gatekeeper-1-0
+    start keymaster-3-0
     start servicemanager
 
 on property:crypto.ready=0
-    stop sbinqseecomd
     stop keymaster-3-0
     stop gatekeeper-1-0
-    stop hwservicemanager
     stop servicemanager

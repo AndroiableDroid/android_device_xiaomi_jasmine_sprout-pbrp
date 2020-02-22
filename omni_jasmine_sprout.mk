@@ -29,7 +29,8 @@ AB_OTA_UPDATER := true
 AB_OTA_PARTITIONS += \
     boot \
     system \
-    vendor
+    vendor \
+    vbmeta
 
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
@@ -42,11 +43,6 @@ PRODUCT_PACKAGES += \
     update_engine \
     update_verifier
 
-# The following modules are included in debuggable builds only.
-PRODUCT_PACKAGES_DEBUG += \
-    bootctl \
-    update_engine_client
-
 # Boot control HAL
 PRODUCT_PACKAGES += \
     bootctrl.sdm660
@@ -54,7 +50,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_STATIC_BOOT_CONTROL_HAL := \
     bootctrl.sdm660 \
     libgptutils \
-    libz
+    libz \
+    libcutils
 
 PRODUCT_PACKAGES += \
     charger_res_images \

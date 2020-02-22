@@ -52,19 +52,16 @@ TARGET_2ND_CPU_VARIANT := cortex-a73
 ENABLE_CPUSETS := true
 ENABLE_SCHEDBOOST := true
 
-# GPT Utils
-BOARD_PROVIDES_GPTUTILS := true
-
 # Kernel
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0 earlycon=msm_serial_dm,0xc170000 androidboot.hardware=qcom msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 swiotlb=1 androidboot.configfs=true androidboot.usbcontroller=a800000.dwc3
-BOARD_KERNEL_CMDLINE += skip_override androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE += skip_override androidboot.fastboot=1 androidboot.selinux=permissive
 BOARD_KERNEL_BASE        := 0x00000000
 BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_KERNEL_PAGESIZE    := 4096
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET     := 0x01000000
 BOARD_SECOND_OFFSET := 0x00f00000
-TARGET_PREBUILT_KERNEL := device/xiaomi/jasmine_sprout/prebuilt/Image.gz-dtb
+TARGET_PREBUILT_KERNEL := $(PLATFORM_PATH)/prebuilt/Image.gz-dtb
 
 
 # Partitions
@@ -83,13 +80,12 @@ TARGET_USERIMAGES_USE_F2FS := true
 # A/B device flags
 TARGET_NO_KERNEL := false
 #TARGET_NO_RECOVERY := true
-#BOARD_USES_RECOVERY_AS_BOOT := true
+BOARD_USES_RECOVERY_AS_BOOT := true
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 AB_OTA_UPDATER := true
 
 # Encryption
 PLATFORM_SECURITY_PATCH := 2025-01-05
-PLATFORM_VERSION := 16.1.0
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 
@@ -125,4 +121,3 @@ BOARD_SUPPRESS_SECURE_ERASE := true
 TW_USE_LEDS_HAPTICS := true
 TW_EXCLUDE_TWRPAPP := true
 TW_INCLUDE_REPACKTOOLS := true
-PB_DISABLE_DEFAULT_DM_VERITY := true
