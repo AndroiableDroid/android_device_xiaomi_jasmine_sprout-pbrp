@@ -75,8 +75,17 @@ for file in $(find $venbin -type f); do
   relink "$file"
 done
 
+is_fastboot_twrp=$(getprop ro.boot.fastboot)
+if [ ! -z "$is_fastboot_twrp" ]; then
+	osver=$(getprop ro.build.version.release_orig)
+	patchlevel=$(getprop ro.build.version.security_patch_orig)
+	setprop ro.build.version.release "$osver"
+	setprop ro.build.version.security_patch "$patchlevel"
+	finish
+fi
+
 temp_mount "$TEMPSYS" "system" "$syspath"
-if [ -f "$TEMPSYS/$BUILDPROP" ]; then
+if [ -f "$TEMPSYS/$BUILDPROP" ] && [ -z "$is_fastboot_twrp" ]; then
     log_info "Current system is Oreo or above. Proceed with setting OS version and security patch level..."
     log_info "Build.prop exists! Setting system properties from build.prop"
     log_info "Current OS version: $osver"
