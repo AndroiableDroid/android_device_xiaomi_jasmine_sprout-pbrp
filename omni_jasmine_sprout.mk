@@ -14,14 +14,11 @@
 # limitations under the License.
 #
 
-# Inherit from the common Open Source product configuration
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-
 # Inherit language packages
-$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
 
 # Inherit from our custom product configuration
-$(call inherit-product, vendor/pb/config/common.mk)
+$(call inherit-product, vendor/omni/config/common.mk)
 
 # A/B updater
 AB_OTA_UPDATER := true
@@ -59,7 +56,9 @@ PRODUCT_PACKAGES += \
 	
 	# Partitions (listed in the file) to be wiped under recovery.
 TARGET_RECOVERY_WIPE := \
-    device/xiaomi/jasmine_sprout/recovery/root/etc/recovery.wipe	
+    device/xiaomi/jasmine_sprout/recovery/root/etc/recovery.wipe
+
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,$(LOCAL_PATH)/recovery/root,recovery/root)
 
 # add support for future ota updates
 PRODUCT_PROPERTY_OVERRIDES += \
