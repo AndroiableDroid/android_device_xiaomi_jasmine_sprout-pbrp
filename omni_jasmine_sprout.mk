@@ -41,21 +41,24 @@ PRODUCT_PACKAGES += \
     update_verifier \
     update_engine_sideload
 
-# Boot control HAL
-PRODUCT_PACKAGES += \
-    bootctrl.sdm660
-
-PRODUCT_STATIC_BOOT_CONTROL_HAL := \
-    bootctrl.sdm660 \
-    libgptutils \
-    libz \
-    libcutils
-
 PRODUCT_PACKAGES += \
     charger_res_images \
     charger
-	
-	# Partitions (listed in the file) to be wiped under recovery.
+# Boot control HAL
+PRODUCT_PACKAGES += \
+    android.hardware.boot@1.0-impl \
+    android.hardware.boot@1.0-service \
+    android.hardware.boot@1.0-impl-wrapper.recovery \
+    android.hardware.boot@1.0-impl-wrapper \
+    android.hardware.boot@1.0-impl-recovery \
+    bootctrl.msmnile \
+    bootctrl.msmnile.recovery
+
+# Soong namespaces
+PRODUCT_SOONG_NAMESPACES += \
+    $(LOCAL_PATH)
+
+# Partitions (listed in the file) to be wiped under recovery.
 TARGET_RECOVERY_WIPE := \
     device/xiaomi/jasmine_sprout/recovery/root/etc/recovery.wipe
 

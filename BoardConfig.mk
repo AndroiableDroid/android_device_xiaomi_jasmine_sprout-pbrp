@@ -86,9 +86,9 @@ BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 AB_OTA_UPDATER := true
 
 # Encryption
-PLATFORM_SECURITY_PATCH := 2025-01-05
-TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_CRYPTO_FBE := true
+#PLATFORM_SECURITY_PATCH := 2025-01-05
+#TW_INCLUDE_CRYPTO := true
+#TW_INCLUDE_CRYPTO_FBE := true
 
 # TWRP specific build flags
 RECOVERY_SDCARD_ON_DATA := true
@@ -107,6 +107,7 @@ TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBA_8888"
 TW_SCREEN_BLANK_ON_BOOT := true
+LZMA_RAMDISK_TARGETS := recovery
 TW_USE_TOOLBOX := true
 
 # Debug flags
