@@ -89,14 +89,14 @@ if [ -f "$TEMPSYS/$BUILDPROP" ] && [ -z "$is_fastboot_twrp" ]; then
     log_info "Current system is Oreo or above. Proceed with setting OS version and security patch level..."
     log_info "Build.prop exists! Setting system properties from build.prop"
     log_info "Current OS version: $osver"
-    osver=$(grep -i 'ro.build.version.release' "$TEMPSYS/$BUILDPROP"  | cut -f2 -d'=' -s)
+    osver=$(grep -i 'ro.build.version.release=' "$TEMPSYS/$BUILDPROP"  | cut -f2 -d'=' -s)
     if [ -n "$osver" ]; then
         resetprop ro.build.version.release "$osver"
         sed -i "s/ro.build.version.release=.*/ro.build.version.release=""$osver""/g" "/$DEFAULTPROP" ;
         log_info "New OS Version: $osver"
     fi
     log_info "Current security patch level: $patchlevel"
-    patchlevel=$(grep -i 'ro.build.version.security_patch' "$TEMPSYS/$BUILDPROP"  | cut -f2 -d'=' -s)
+    patchlevel=$(grep -i 'ro.build.version.security_patch=' "$TEMPSYS/$BUILDPROP"  | cut -f2 -d'=' -s)
     if [ -n "$patchlevel" ]; then
         resetprop ro.build.version.security_patch "$patchlevel"
         sed -i "s/ro.build.version.security_patch=.*/ro.build.version.security_patch=""$patchlevel""/g" "/$DEFAULTPROP" ;
@@ -105,7 +105,7 @@ if [ -f "$TEMPSYS/$BUILDPROP" ] && [ -z "$is_fastboot_twrp" ]; then
     # Only needed for some devices (for stock OTA capability), so set "SETFINGERPRINT" variable to "false" if your device isn't one of them
     if [ "$SETFINGERPRINT" = "true" ]; then
         log_info "Current fingerprint: $fingerprint"
-        fingerprint=$(grep -i 'ro.build.fingerprint' "$TEMPSYS/$BUILDPROP"  | cut -f2 -d'=' -s)
+        fingerprint=$(grep -i 'ro.build.fingerprint=' "$TEMPSYS/$BUILDPROP"  | cut -f2 -d'=' -s)
         if [ -n "$fingerprint" ]; then
             resetprop ro.build.fingerprint "$fingerprint"
             sed -i "s/ro.build.fingerprint=.*/ro.build.fingerprint=""$fingerprint""/g" "/$DEFAULTPROP" ;
